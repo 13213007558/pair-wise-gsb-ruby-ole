@@ -760,7 +760,7 @@ module Ole # :nodoc:
 					@create_time ||= default_time
 					@modify_time ||= default_time
 					@create_time = Types::Variant.load(Types::VT_FILETIME, create_time_str) if create_time_str
-					@modify_time = Types::Variant.load(Types::VT_FILETIME, create_time_str) if modify_time_str
+					@modify_time = Types::Variant.load(Types::VT_FILETIME, modify_time_str) if modify_time_str
 					@children = nil
 					@name_lookup = nil
 				else
@@ -942,4 +942,3 @@ module Ole # :nodoc:
 		end
 	end
 end
-
