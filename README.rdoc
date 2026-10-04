@@ -64,6 +64,22 @@ categorised roughly by purpose.
 
      p ole.root["\001CompObj"].open { |io| io.ranges } # => [[0, 64], [64, 34]]
 
+4. Rewriting the layout for contiguous "hot" streams
+
+   Archival tools can rewrite a document into a new file so that a
+   nominated set of hot streams is stored contiguously, optionally with
+   per stream alignment (in blocks). The directory, FAT, DIFAT, mini
+   stream and MiniFAT are all regenerated; the storage hierarchy,
+   CLSIDs, state bits and timestamps are preserved, and unsatisfiable
+   constraints raise <tt>Ole::Storage::Layout::ConflictError</tt> rather
+   than silently falling back to an arbitrary layout.
+
+     ole = Ole::Storage.open('archive.ole', 'rb')
+     report = ole.rewrite_layout 'archive.repacked.ole',
+       :order => %w[WordDocument SummaryInformation],
+       :align => { 'WordDocument' => 8 }
+     p report.fragments_before, report.fragments_after
+
 See the documentation for each class for more details.
 
 = Thanks
