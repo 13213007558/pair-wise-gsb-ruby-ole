@@ -66,6 +66,15 @@ categorised roughly by purpose.
 
 See the documentation for each class for more details.
 
+= MS-OVBA Compression
+
+Use Ole::VBACompression to encode or decode an MS-OVBA compressed
+container. Both methods accept either a binary string or an IO object. They
+only move bytes; no macros are evaluated or executed.
+
+  compressed = Ole::VBACompression.encode(data)
+  data = Ole::VBACompression.decode(compressed, nil, max_output_length)
+
 = Thanks
 
 * The code contained in this project was initially based on chicago's libole

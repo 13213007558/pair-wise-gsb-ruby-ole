@@ -5,6 +5,7 @@ require 'tempfile'
 require 'ole/base'
 require 'ole/types'
 require 'ole/ranges_io'
+require 'ole/vba_compression'
 
 module Ole # :nodoc:
 	#
@@ -942,4 +943,3 @@ module Ole # :nodoc:
 		end
 	end
 end
-
