@@ -91,6 +91,19 @@ module Ole # :nodoc:
 			end
 		end
 
+		def self.validate_allocation arg
+			if String === arg
+				File.open(arg, 'rb') { |io| AllocationValidator.new(io).validate }
+			else
+				source = arg.respond_to?(:io) ? arg.io : arg
+				AllocationValidator.new(source).validate
+			end
+		end
+
+		def validate_allocation
+			AllocationValidator.new(@io).validate
+		end
+
 		# load document from file.
 		#
 		# TODO: implement various allocationtable checks, maybe as a AllocationTable#fsck function :)
@@ -942,4 +955,3 @@ module Ole # :nodoc:
 		end
 	end
 end
-

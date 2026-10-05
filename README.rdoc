@@ -66,6 +66,27 @@ categorised roughly by purpose.
 
 See the documentation for each class for more details.
 
+4. Read-only allocation validation
+
+   Use <tt>Ole::Storage.validate_allocation</tt> to audit FAT, DIFAT,
+   directory, miniFAT, regular streams and the root mini stream without
+   modifying the file. It accepts a path or readable IO and works with both
+   512 and 4096 byte sectors:
+
+     report = Ole::Storage.validate_allocation('test.doc')
+     report.valid?                 # => true
+     report.owners[0]             # => {:kind=>"fat", ...}
+     report.mini_owners[0]         # => {:kind=>"mini_stream",
+                                   #     :name=>"...",
+                                   #     :big_sector=>3, :offset=>0}
+     report.issues                 # => []
+
+   Corrupt files return structured <tt>AllocationIssue</tt> objects with
+   machine readable <tt>code</tt> values, affected sectors/mini sectors, and
+   the related objects. The validator reports cycles, cross-linked objects,
+   bad special markers, short declarations and unreachable allocated sectors,
+   but never repairs the input.
+
 = Thanks
 
 * The code contained in this project was initially based on chicago's libole
