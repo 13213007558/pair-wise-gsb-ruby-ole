@@ -30,7 +30,36 @@ categorised roughly by purpose.
      p ole.meta_data.mime_type # => "application/msword"
      p ole.meta_data.doc_author.split.first # => "Charles"
 
-3. Raw access to underlying OLE internals
+3. Reading Outlook MSG files
+
+   A read-only MSG layer ([MS-OXMSG]) is provided on top of Ole::Storage,
+   giving access to message properties, recipients and attachments. Fixed
+   (predefined) properties and named properties are kept separate; named
+   properties retain their stable identity (property set GUID plus string
+   name or LID) resolved through the file's nameid mapping, rather than the
+   transient property number used within the file.
+
+     require 'ole/msg'
+
+     Ole::Msg.open('message.msg') do |msg|
+       p msg.subject
+       p msg.properties[0x0037]                  # fixed property by id
+       p msg.properties.named                    # named properties, with guid + name/lid
+       msg.recipients.each { |r| p [r.name, r.email, r.type] }
+       msg.attachments.each do |a|
+         if a.embedded?
+           p a.embedded_msg.subject              # nested Ole::Msg::Message
+         else
+           p [a.filename, a.data.length]         # raw bytes, content not parsed
+         end
+       end
+     end
+
+   No MIME conversion is performed, and attachment content is neither
+   parsed nor executed. Corrupt property streams raise
+   Ole::Msg::FormatError identifying the offending storage.
+
+4. Raw access to underlying OLE internals
 
    This is probably of little interest to most developers using the
    library, but for some use cases you may need to drop down to the

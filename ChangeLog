@@ -1,3 +1,13 @@
+== Unreleased
+
+- Add a read-only MSG (Outlook message, [MS-OXMSG]) reading layer,
+  Ole::Msg, exposing message properties, recipients and attachments.
+  Fixed and named properties are kept separate, with named properties
+  resolved through the nameid mapping to their stable GUID + string
+  name/LID identity. Handles unicode/ANSI strings, multi-valued
+  properties and embedded-message attachments. Corrupt property streams
+  raise Ole::Msg::FormatError locating the offending storage.
+
 == 1.2.13.1 / 2024-03-28
 
 - Try using gemspec metadata to see if it will update rubygems homepage link.
@@ -163,4 +173,3 @@
 == 1.2.1 / 2007-08-20
 
 - Separate out from ruby-msg as new project.
-
